@@ -15,3 +15,30 @@ model Prueba{
   title String @db.VarChar(255)
   content String
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  email String @db.VarChar(255) @unique
+  password String @db.VarChar(255)
+  cards Card[]
+}
+
+model Card {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(50)
+  credit Decimal
+  closing_date DateTime @db.Date
+  payment_due_date DateTime @db.Date
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+  purchases Purchase[]
+}
+
+model Purchase {
+  id Int @id @default(autoincrement())
+  date DateTime @db.Date
+  amount Decimal
+  card Card @relation(fields: [cardId], references: [id])
+  cardId Int
+}
